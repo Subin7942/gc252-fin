@@ -10,10 +10,12 @@ let clockCW, clockCH;
 let clockImg;
 let sHand, mHand, hHand;
 let cloud;
+let rX, rY, rW, rH;
+let lastSchedule = false;
+let scheduleChange = 0;
 
-let toDoList = [];
-
-let ps = [];
+const toDoList = [];
+const ps = [];
 
 function preload() {
   cloud = loadImage('./assets/clockCloud.png');
@@ -41,21 +43,22 @@ function preload() {
   fontB = loadFont('./assets/Eulyoo1945-SemiBold.otf');
 }
 
+
+
 function setup() {
-  const { width: containerWidth, height: containerHeight } =
-    canvasContainer.getBoundingClientRect();
+  // const { width: containerWidth, height: containerHeight } =
+  //   canvasContainer.getBoundingClientRect();
 
-  console.log(containerWidth, containerHeight);
+  // console.log(containerWidth, containerHeight);
 
-  const renderer = createCanvas(containerWidth, containerHeight);
-  renderer.parent(canvasContainer);
-
-  //   const renderer = createCanvas(1000, 600)
+  // const renderer = createCanvas(containerWidth, containerHeight);
   // renderer.parent(canvasContainer);
 
-  // renderer.elt.style.aspectRatio = `${width} / ${height}`
-  // renderer.elt.style.height = "100%"
-  // renderer.elt.style.width = "";
+const render = createCanvas(1820, 980);
+  render.parent(canvasContainer);
+  render.elt.style.width = '100%';
+  render.elt.style.height = '100%';
+  canvasContainer.style.aspectRatio = `${width} / ${height}`;
 
   clockCW = width / 2 - 330;
   clockCH = height / 2;
@@ -74,8 +77,7 @@ function setup() {
   }
 
   imageMode(CENTER);
-  colorMode(HSB);
-  rectMode(CENTER);
+  // rectMode(CENTER);
   ellipseMode(CENTER);
 
   toDoList.push(
@@ -148,6 +150,14 @@ function setup() {
   );
   toDoList.push(
     new ToDoList(
+      '거울보기',
+      '공주님은 예쁜 얼굴 보는 걸 좋아해요!',
+      '거울을 볼 때면 자신의 모습에 취해',
+      '행복해지곤 한답니다.'
+    )
+  );
+  toDoList.push(
+    new ToDoList(
       '산책하기',
       '공주님은 동물들과도 친하게 지낸답니다.',
       '얼른 밖에 나가 숲속 친구들에게 인사해요!'
@@ -165,7 +175,7 @@ function draw() {
   clock();
   showTime();
   clockNumber();
-  princessImage();
+  // princessImage();
   schedule();
 
   // 위아래 장식 레이스
@@ -183,13 +193,16 @@ function draw() {
     aParticle.reset();
   });
 
-  fill('black');
-
   toDoList[li].schedule();
-}
 
-function mousePressed() {
-  li = floor(random(0, toDoList.length));
+  if (s % 5 === 0 && lastSchedule === false) {
+    li = floor(random(0, toDoList.length));
+    lastSchedule = true;
+  }
+
+  if (s % 5 !== 0) {
+    lastSchedule = false;
+  }
 }
 
 function princessImage() {
@@ -217,7 +230,7 @@ function schedule() {
   let textSH1 = height / 2 + 160;
   let textSH2 = height / 2 + 160 + 30;
 
-  // 배경 스카프
+  // 배경
   push();
   noStroke();
   fill('#ffffff');
@@ -324,8 +337,14 @@ function schedule() {
   //   text('오늘 하루는 어땠나요?', textW2, textSH2);
   //   text('푹 자고 내일도 아리따운 하루를 보내요!', textW2, textSH2 + 30);
   // }
-  textSize(10);
-  text('클릭해서 다음 활동하기', textW + 180, textSH2 + 100);
+  stroke('#ea7eb9ff');
+  noFill();
+  rect(textW + 180, textSH2 + 90, 100, 7, 20);
+
+  let w = map(s % 5, 0, 5, 0, 100);
+  noStroke();
+  fill('#ea7eb9ff');
+  rect(textW + 180, textSH2 + 90, w, 7, 20);
 }
 
 function clockNumber() {

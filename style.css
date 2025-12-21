@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -17,24 +17,26 @@ body {
 canvas {
   display: block;
   margin-inline: auto;
-}
+} */
 
-/* @font-face {
-  font-family: 'OgRenaissanceSecret';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/OG_Renaissance_Secret-Rg.woff2')
-    format('woff2');
-  font-weight: normal;
-  font-display: swap;
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  height: 100vh;
 }
 
-h1 {
-  text-align: center;
-  color: #ea7eb9ff;
-  font-size: 60px;
-  font-family: 'OgRenaissanceSecret';
-  margin-top: 20px;
-} */
+.canvas-container {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+  margin-inline: auto;
+}
+*:has(.canvas-container) {
+  align-content: center;
+}
+
+canvas {
+  display: block;
+}
